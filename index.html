@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@username - Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 85, 0.1) 0%, transparent 50%);
+            animation: backgroundShift 15s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f3ff 0%, #ff0055 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.6);
+            animation: avatarPulse 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes avatarPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 243, 255, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(0, 243, 255, 0.8); }
+        }
+
+        .username {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .bio {
+            color: #aaa;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .link-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .link-btn:hover::before {
+            left: 100%;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .link-btn:active {
+            transform: translateY(-1px) scale(1);
+        }
+
+        .link-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .link-text {
+            flex: 1;
+        }
+
+        .link-arrow {
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+        }
+
+        .link-btn:hover .link-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Platform Colors */
+        .instagram {
+            border-color: rgba(225, 48, 108, 0.5);
+        }
+        .instagram:hover {
+            background: rgba(225, 48, 108, 0.2);
+            border-color: #E1306C;
+            box-shadow: 0 0 30px rgba(225, 48, 108, 0.5);
+        }
+
+        .youtube {
+            border-color: rgba(255, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(0, 243, 255, 0.1) 100%);
+            animation: featuredGlow 2s ease-in-out infinite alternate;
+        }
+        .youtube:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #FF0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+        }
+
+        .facebook {
+            border-color: rgba(24, 119, 242, 0.5);
+        }
+        .facebook:hover {
+            background: rgba(24, 119, 242, 0.2);
+            border-color: #1877F2;
+            box-shadow: 0 0 30px rgba(24, 119, 242, 0.5);
+        }
+
+        .twitter {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .twitter:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+
+        .project {
+            border-color: rgba(0, 255, 102, 0.5);
+            background: linear-gradient(135deg, rgba(0, 255, 102, 0.1) 0%, rgba(0, 243, 255, 0.1) 100%);
+        }
+        .project:hover {
+            background: rgba(0, 255, 102, 0.2);
+            border-color: #00ff66;
+            box-shadow: 0 0 30px rgba(0, 255, 102, 0.5);
+        }
+
+        .linkedin {
+            border-color: rgba(0, 119, 181, 0.5);
+        }
+        .linkedin:hover {
+            background: rgba(0, 119, 181, 0.2);
+            border-color: #0077B5;
+            box-shadow: 0 0 30px rgba(0, 119, 181, 0.5);
+        }
+
+        @keyframes featuredGlow {
+            from { box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
+            to { box-shadow: 0 0 40px rgba(255, 0, 0, 0.6); }
+        }
+
+        /* ===== FOOTER DENGAN ANIMASI BERPUTAR ===== */
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 243, 255, 0.15);
+            position: relative;
+        }
+
+        .orbit-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+        }
+
+        /* Icon di tengah */
+        .orbit-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00f3ff 0%, #ff0055 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+            animation: centerPulse 2s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 50px rgba(255, 0, 85, 0.8);
+            }
+        }
+
+        /* Orbit ring */
+        .orbit-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+            border: 1px dashed rgba(0, 243, 255, 0.3);
+            border-radius: 50%;
+            animation: ringRotate 20s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Teks yang berputar */
+        .orbit-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation: textRotate 15s linear infinite;
+        }
+
+        @keyframes textRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .orbit-text svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .orbit-text text {
+            fill: #00f3ff;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Planet kecil yang berputar */
+        .orbit-planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            margin: -6px 0 0 -6px;
+            background: #ff0055;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #ff0055;
+            transform-origin: 0 0;
+            animation: planetOrbit 8s linear infinite;
+        }
+
+        .orbit-planet:nth-child(2) {
+            background: #00ff66;
+            box-shadow: 0 0 15px #00ff66;
+            animation: planetOrbit 8s linear infinite reverse;
+            animation-duration: 12s;
+        }
+
+        @keyframes planetOrbit {
+            from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+        }
+
+        /* Teks di bawah orbit */
+        .footer-text {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-text span {
+            color: #ff0055;
+            animation: heartBeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .footer-link {
+            display: inline-block;
+            color: #00f3ff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #00f3ff;
+            transition: width 0.3s;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .footer-link:hover {
+            text-shadow: 0 0 10px #00f3ff;
+        }
+
+        .click-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .username {
+                font-size: 1.5rem;
+            }
+
+            .bio {
+                font-size: 0.9rem;
+            }
+
+            .link-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+
+            .orbit-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .orbit-ring {
+                width: 130px;
+                height: 130px;
+            }
+
+            .orbit-center {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <div class="avatar">👨‍💻</div>
+            <h1 class="username">El-Sareja</h1>
+            <p class="bio">Developer & AI Engineer</p>
+        </div>
+
+        <div class="links">
+            <a href="https://youtube.com/@username" target="_blank" class="link-btn youtube">
+                <span class="link-icon">🎬</span>
+                <span class="link-text">YouTube</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://instagram.com/masa_reja" target="_blank" class="link-btn instagram">
+                <span class="link-icon">📷</span>
+                <span class="link-text">Instagram</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://facebook.com/username" target="_blank" class="link-btn facebook">
+                <span class="link-icon">👤</span>
+                <span class="link-text">Facebook</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://x.com/masa_reja" target="_blank" class="link-btn twitter">
+                <span class="link-icon">🐦</span>
+                <span class="link-text">X (Twitter)</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://github.com/rendiramadani434-eng" target="_blank" class="link-btn project">
+                <span class="link-icon">💻</span>
+                <span class="link-text">My Projects</span>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="https://linkedin.com/in/rendi-ramadani-845653316/" target="_blank" class="link-btn linkedin">
+                <span class="link-icon">💼</span>
+                <span class="link-text">LinkedIn</span>
+                <span class="link-arrow">→</span>
+            </a>
+        </div>
+
+        <!-- Footer dengan Animasi Berputar -->
+        <div class="footer">
+            <div class="orbit-container">
+                <!-- Icon di tengah -->
+                <div class="orbit-center">⚡</div>
+                
+                <!-- Orbit ring -->
+                <div class="orbit-ring"></div>
+                
+                <!-- Planet yang berputar -->
+                <div class="orbit-planet"></div>
+                <div class="orbit-planet"></div>
+                
+                <!-- Teks melengkung yang berputar -->
+                <div class="orbit-text">
+                    <svg viewBox="0 0 180 180">
+                        <defs>
+                            <path id="circlePath" d="M 90, 90 m -70, 0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0" />
+                        </defs>
+                        <text>
+                            <textPath href="#circlePath">
+                                ★ CYBER LINK HUB ★ MADE WITH CODE ★ CYBER LINK HUB ★ MADE WITH CODE 
+                            </textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="footer-text">Made with <span>❤️</span> by el-sareja</p>
+            <a href="#" class="footer-link">© 2026 All Rights Reserved</a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.link-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('click-ripple');
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        document.querySelectorAll('.link-btn').forEach((btn, index) => {
+            btn.style.opacity = '0';
+            btn.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s forwards`;
+        });
+    </script>
+</body>
+</html>
